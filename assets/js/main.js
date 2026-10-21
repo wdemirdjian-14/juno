@@ -61,6 +61,10 @@ if (motion && 'IntersectionObserver' in window) {
 
 /* ---------- Scènes épinglées et cartes empilées ---------- */
 const scenes = [...document.querySelectorAll('[data-scene]')];
+// --p est posé directement sur chaque élément animé : Safari (iPhone) ne rafraîchit pas
+// toujours les enfants quand seule la variable du parent change
+const ANIMATED = '.hero-logo, .hero-copy .eyebrow, .hero h1 span, .lead, .hero-actions, .scroll-hint, .w, .team-photo picture, .team-photo img, .team-photo figcaption';
+const sceneParts = new Map(scenes.map(s => [s, [s, ...s.querySelectorAll(ANIMATED)]]));
 const hero = document.querySelector('.hero');
 const cards = [...document.querySelectorAll('.stack .card')];
 const navLinks = [...document.querySelectorAll('.main-nav a')];
@@ -85,8 +89,10 @@ function update() {
     scenes.forEach(s => {
       const r = s.getBoundingClientRect();
       if (r.bottom < -50 || r.top > vh + 50) return;
-      const p = clamp(-r.top / (s.offsetHeight - vh), 0, 1);
-      s.style.setProperty('--p', p.toFixed(4));
+      const p = clamp(-r.top / (s.offsetHeight - vh), 0, 1).toFixed(4);
+      if (s.dataset.p === p) return;
+      s.dataset.p = p;
+      sceneParts.get(s).forEach(el => el.style.setProperty('--p', p));
       if (s === hero) hero.classList.toggle('ready', p > .5);
     });
 
