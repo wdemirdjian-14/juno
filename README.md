@@ -11,11 +11,29 @@ Site statique (un seul `index.html` + dossier `assets/`).
 
 Après une modification du CSS ou du JS, incrémenter `?v=` dans `index.html` pour forcer les navigateurs à recharger.
 
-## Formulaire de contact (widget enveloppe)
+## Back-office (`/admin/`)
 
-Les messages sont envoyés via [FormSubmit](https://formsubmit.co) à l'adresse définie par `CONTACT_EMAIL` en haut de `assets/js/main.js`.
-Au premier envoi depuis le site en ligne, FormSubmit envoie un e-mail d'activation à cette adresse : il faut cliquer sur le lien une fois.
-Si l'envoi échoue, le visiteur se voit proposer d'écrire directement depuis sa messagerie.
+Accès unique par mot de passe : https://juno-avocates-paris.walautao.fr/admin/
+
+- **Statistiques** : visiteurs, pages vues, sources, appareils, sections lues, heures de visite. Mesure maison, sans cookie : l'IP n'est jamais enregistrée (empreinte du jour effacée chaque nuit).
+- **Messages** : les demandes du formulaire arrivent « À traiter ». Statut (nouveau, en cours, traité), notes internes, archivage, suppression définitive des archivés.
+- **Textes** : tous les textes du site sont modifiables ; le site est régénéré à l'enregistrement. « Rétablir l'original » revient au texte de `index.html`.
+- **Réglages** : changement du mot de passe.
+
+Organisation :
+
+- `server/` : serveur Node.js (aucune dépendance obligatoire ; `nodemailer` facultatif pour les notifications)
+- `admin/` : interface du back-office
+- données sur le VPS dans `/var/lib/juno` (hors du dossier public) : `messages.json`, `content.json`, `analytics/`, `auth.json`
+- réglages facultatifs dans `/etc/juno-admin.env` (notifications e-mail, voir `deploy/juno-admin.env.example`)
+
+Installation (une fois) : `sudo bash /var/www/juno/deploy/install-backoffice.sh`
+
+Mot de passe oublié : `sudo -u www-data JUNO_DATA=/var/lib/juno node /var/www/juno/server/set-password.js`
+
+Sauvegarde des messages : copier régulièrement le dossier `/var/lib/juno`.
+
+Aperçu local : `JUNO_DATA=./.data SERVE_STATIC=1 node server/server.js` puis http://127.0.0.1:3100
 
 ## Installation sur le VPS IONOS (Ubuntu/Debian) — une seule fois
 

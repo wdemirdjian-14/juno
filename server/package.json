@@ -1,0 +1,13 @@
+{
+  "name": "juno-backoffice",
+  "private": true,
+  "description": "Back-office du site JUNO AVOCAT·ES",
+  "main": "server.js",
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "optionalDependencies": {
+    "nodemailer": "6.9.16"
+  }
+}

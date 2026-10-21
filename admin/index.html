@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Back-office — JUNO AVOCAT·ES</title>
+<link rel="stylesheet" href="/assets/fonts.css">
+<link rel="stylesheet" href="admin.css?v=1">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231527ac'/%3E%3Cpath d='M12 20h13v22c0 3-1 5-4 5s-4-2-4-5H4c0 11 7 18 17 18s17-7 17-18V20z' fill='%23f6c1b4'/%3E%3C/svg%3E">
+</head>
+<body>
+
+<!-- Connexion -->
+<section class="login" id="login" hidden>
+  <form class="login-card" id="login-form">
+    <img src="/assets/img/juno-signature.png" width="600" height="323" alt="JUNO">
+    <h1>Back-office</h1>
+    <label for="password">Mot de passe</label>
+    <input id="password" name="password" type="password" autocomplete="current-password" required autofocus>
+    <p class="error" id="login-error" role="alert" hidden></p>
+    <button class="btn primary" type="submit">Se connecter</button>
+  </form>
+</section>
+
+<!-- Application -->
+<div class="app" id="app" hidden>
+  <aside class="sidebar">
+    <a class="logo" href="/" target="_blank" rel="noopener" title="Voir le site"><img src="/assets/img/juno-signature.png" width="600" height="323" alt="JUNO"></a>
+    <nav class="tabs" aria-label="Sections du back-office">
+      <a href="#dashboard" data-view="dashboard">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg><span>Statistiques</span>
+      </a>
+      <a href="#messages" data-view="messages">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3.5 6 8.5 7 8.5-7"/></svg><span>Messages</span><b class="badge" id="badge" hidden></b>
+      </a>
+      <a href="#content" data-view="content">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16zM14 6l4 4"/></svg><span>Textes</span>
+      </a>
+      <a href="#settings" data-view="settings">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.2"/><path d="M12 2v3M12 19v3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M2 12h3M19 12h3M4.9 19.1 7 17M17 7l2.1-2.1"/></svg><span>Réglages</span>
+      </a>
+    </nav>
+    <button class="logout" id="logout" type="button">Déconnexion</button>
+  </aside>
+
+  <main class="main">
+    <!-- Statistiques -->
+    <section class="view" id="view-dashboard" hidden>
+      <header class="view-head">
+        <div><h1>Statistiques</h1><p class="sub">Audience du site, sans cookie ni donnée personnelle.</p></div>
+        <div class="segmented" id="period" role="group" aria-label="Période">
+          <button type="button" data-days="7">7 j</button>
+          <button type="button" data-days="30" aria-pressed="true">30 j</button>
+          <button type="button" data-days="90">90 j</button>
+          <button type="button" data-days="365">12 mois</button>
+        </div>
+      </header>
+      <div class="kpis" id="kpis"></div>
+      <article class="panel">
+        <h2>Visiteurs par jour</h2>
+        <div class="chart" id="chart-days"></div>
+      </article>
+      <div class="grid-2">
+        <article class="panel"><h2>D’où viennent les visiteurs</h2><div id="list-refs"></div></article>
+        <article class="panel"><h2>Jusqu’où ils lisent la page</h2><p class="hint">Part des visites qui atteignent chaque section.</p><div id="list-sections"></div></article>
+        <article class="panel"><h2>Appareils</h2><div id="list-devices"></div></article>
+        <article class="panel"><h2>Navigateurs</h2><div id="list-browsers"></div></article>
+      </div>
+      <article class="panel">
+        <h2>Heures de visite</h2>
+        <div class="chart" id="chart-hours"></div>
+      </article>
+    </section>
+
+    <!-- Messages -->
+    <section class="view" id="view-messages" hidden>
+      <header class="view-head">
+        <div><h1>Messages</h1><p class="sub">Demandes reçues par le formulaire du site.</p></div>
+        <input class="search" id="msg-search" type="search" placeholder="Rechercher un nom, un e-mail…" aria-label="Rechercher dans les messages">
+      </header>
+      <div class="segmented wide" id="msg-filter" role="group" aria-label="Filtrer les messages">
+        <button type="button" data-filter="todo" aria-pressed="true">À traiter <i id="count-todo"></i></button>
+        <button type="button" data-filter="done">Traités <i id="count-done"></i></button>
+        <button type="button" data-filter="archived">Archivés <i id="count-archived"></i></button>
+      </div>
+      <div class="inbox">
+        <ul class="msg-list" id="msg-list"></ul>
+        <div class="msg-detail" id="msg-detail" hidden></div>
+      </div>
+    </section>
+
+    <!-- Textes -->
+    <section class="view" id="view-content" hidden>
+      <header class="view-head">
+        <div><h1>Textes du site</h1><p class="sub">Modifiez un texte puis enregistrez : le site est mis à jour immédiatement.</p></div>
+        <input class="search" id="content-search" type="search" placeholder="Rechercher un texte…" aria-label="Rechercher un texte">
+      </header>
+      <div id="content-groups"></div>
+      <div class="savebar" id="savebar" hidden>
+        <span id="savebar-text"></span>
+        <button class="btn" type="button" id="content-cancel">Annuler</button>
+        <button class="btn primary" type="button" id="content-save">Enregistrer</button>
+      </div>
+    </section>
+
+    <!-- Réglages -->
+    <section class="view" id="view-settings" hidden>
+      <header class="view-head"><div><h1>Réglages</h1></div></header>
+      <article class="panel narrow">
+        <h2>Changer le mot de passe</h2>
+        <form id="pw-form" class="stack-form">
+          <label>Mot de passe actuel<input type="password" name="current" autocomplete="current-password" required></label>
+          <label>Nouveau mot de passe <small>(10 caractères minimum)</small><input type="password" name="next" autocomplete="new-password" minlength="10" required></label>
+          <label>Confirmer le nouveau mot de passe<input type="password" name="confirm" autocomplete="new-password" minlength="10" required></label>
+          <p class="error" id="pw-msg" role="status" hidden></p>
+          <button class="btn primary" type="submit">Mettre à jour</button>
+        </form>
+      </article>
+      <article class="panel narrow">
+        <h2>Notifications par e-mail</h2>
+        <p id="mail-status"></p>
+      </article>
+    </section>
+  </main>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="tooltip" id="tooltip" role="tooltip" hidden></div>
+
+<script src="admin.js?v=1"></script>
+</body>
+</html>

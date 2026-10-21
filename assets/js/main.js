@@ -1,11 +1,34 @@
 /* JUNO AVOCAT·ES — animations au défilement, menu et widget de contact */
 
-// Adresse qui reçoit les demandes du formulaire (via FormSubmit.co)
+// Adresse proposée au visiteur si l'envoi par le formulaire échoue
 const CONTACT_EMAIL = 'j.tellini@juno-avocates.fr';
 
 const root = document.documentElement;
 const motion = root.classList.contains('motion');
 const clamp = (v, min, max) => Math.min(Math.max(v, min), max);
+
+/* ---------- Mesure d'audience (sans cookie, envoyée au back-office du site) ---------- */
+function track(hit) {
+  if (location.protocol === 'file:' || navigator.doNotTrack === '1') return;
+  const body = JSON.stringify(hit);
+  if (!(navigator.sendBeacon && navigator.sendBeacon('/api/t', new Blob([body], { type: 'application/json' })))) {
+    fetch('/api/t', { method: 'POST', body, headers: { 'Content-Type': 'application/json' }, keepalive: true }).catch(() => {});
+  }
+}
+track({ t: 'pv', p: location.pathname, r: document.referrer, w: innerWidth });
+
+// sections atteintes pendant la visite (une fois chacune)
+if ('IntersectionObserver' in window) {
+  const seen = new Set();
+  const so = new IntersectionObserver(entries => entries.forEach(e => {
+    const g = e.target.id;
+    if (e.isIntersecting && !seen.has(g)) { seen.add(g); track({ t: 'sec', v: g }); so.unobserve(e.target); }
+  }), { threshold: 0.25 });
+  ['accueil', 'cabinet', 'competences', 'equipe', 'honoraires', 'contact'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) so.observe(el);
+  });
+}
 
 /* ---------- En-tête et menu ---------- */
 const header = document.querySelector('.site-header');
@@ -134,6 +157,7 @@ function openContact() {
   errorBox.hidden = true;
   root.classList.add('dialog-open');
   dialog.showModal();
+  track({ t: 'ev', v: 'contact_open' });
 }
 
 function closeContact() {
@@ -186,18 +210,14 @@ form.addEventListener('submit', async e => {
   sendBtn.disabled = true;
   sendBtn.querySelector('span').textContent = 'Envoi…';
   try {
-    const res = await fetch(`https://formsubmit.co/ajax/${CONTACT_EMAIL}`, {
+    const res = await fetch('/api/contact', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-      body: JSON.stringify({
-        ...data,
-        _subject: `Site JUNO — ${data.sujet}`,
-        _replyto: data.email,
-        _template: 'table',
-      }),
+      body: JSON.stringify(data),
     });
     const json = await res.json().catch(() => ({}));
-    if (!res.ok || String(json.success) !== 'true') throw new Error(json.message || res.status);
+    if (res.status === 429) { showError(json.error); return; }
+    if (!res.ok || !json.success) throw new Error(json.error || res.status);
 
     form.reset();
     form.hidden = true;

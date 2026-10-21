@@ -1,0 +1,20 @@
+[Unit]
+Description=Back-office du site JUNO AVOCAT·ES
+After=network.target
+
+[Service]
+User=www-data
+Group=www-data
+Environment=NODE_ENV=production JUNO_SITE=/var/www/juno JUNO_DATA=/var/lib/juno PORT=3100
+EnvironmentFile=-/etc/juno-admin.env
+ExecStart=/usr/bin/env node /var/www/juno/server/server.js
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+ReadWritePaths=/var/lib/juno
+
+[Install]
+WantedBy=multi-user.target
