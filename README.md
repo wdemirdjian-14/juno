@@ -2,13 +2,20 @@
 
 Site statique (un seul `index.html` + dossier `assets/`).
 
-## Images à ajouter
+## Structure
 
-Placer ces 3 fichiers dans `assets/` :
+- `index.html` : la page
+- `assets/css/style.css` : styles (mobile first)
+- `assets/js/main.js` : animations au défilement, menu, widget de contact
+- `assets/img/` : images optimisées
 
-- `juno-signature.png` (logo en-tête)
-- `juno-identite.jpg` (logo principal)
-- `judith-et-jade.jpg` (photo de l'équipe)
+Après une modification du CSS ou du JS, incrémenter `?v=` dans `index.html` pour forcer les navigateurs à recharger.
+
+## Formulaire de contact (widget enveloppe)
+
+Les messages sont envoyés via [FormSubmit](https://formsubmit.co) à l'adresse définie par `CONTACT_EMAIL` en haut de `assets/js/main.js`.
+Au premier envoi depuis le site en ligne, FormSubmit envoie un e-mail d'activation à cette adresse : il faut cliquer sur le lien une fois.
+Si l'envoi échoue, le visiteur se voit proposer d'écrire directement depuis sa messagerie.
 
 ## Installation sur le VPS IONOS (Ubuntu/Debian) — une seule fois
 
