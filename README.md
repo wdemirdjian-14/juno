@@ -19,13 +19,12 @@ git clone https://github.com/wdemirdjian-14/juno.git /var/www/juno
 chown -R www-data:www-data /var/www/juno
 
 cp /var/www/juno/deploy/nginx-juno.conf /etc/nginx/sites-available/juno
-nano /etc/nginx/sites-available/juno        # remplacer VOTRE-DOMAINE.fr
 ln -s /etc/nginx/sites-available/juno /etc/nginx/sites-enabled/juno
 rm -f /etc/nginx/sites-enabled/default
 nginx -t && systemctl reload nginx
 
 # HTTPS gratuit (une fois le DNS du domaine pointé vers l'IP du VPS)
-certbot --nginx -d VOTRE-DOMAINE.fr -d www.VOTRE-DOMAINE.fr
+certbot --nginx -d juno-avocates-paris.walautao.fr
 ```
 
 Si le dépôt GitHub est privé, utiliser un *token* GitHub (ou une clé SSH de déploiement) pour le `git clone`.
