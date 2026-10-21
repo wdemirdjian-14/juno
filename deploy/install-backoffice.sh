@@ -25,7 +25,7 @@ fi
 # 3. Dossier des données (messages, textes, statistiques) : hors du dossier public
 mkdir -p "$DATA"
 chown www-data:www-data "$DATA"
-chmod 750 "$DATA"
+chmod 711 "$DATA"  # Nginx (quel que soit son utilisateur) atteint public/ sans pouvoir lister ni lire les données
 chown -R www-data:www-data "$SITE"
 
 # 4. Dépendance facultative (notifications e-mail)
