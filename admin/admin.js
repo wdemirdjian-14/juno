@@ -131,7 +131,7 @@
     loadDashboard();
   }));
 
-  const SECTION_LABELS = { accueil: 'Accueil', cabinet: 'Le cabinet', competences: 'Domaines d’intervention', equipe: 'L’équipe', honoraires: 'Honoraires', contact: 'Contact' };
+  const SECTION_LABELS = { accueil: 'Accueil', cabinet: 'Le cabinet', competences: 'Domaines d’intervention', commercial: 'Droit commercial', equipe: 'L’équipe', honoraires: 'Honoraires', contact: 'Contact' };
 
   async function loadDashboard() {
     const st = await api(`stats?days=${days}`);
@@ -365,7 +365,7 @@
   /* ---------- Textes ---------- */
   const GROUPS = {
     meta: 'Onglet du navigateur', accueil: 'Accueil', bandeau: 'Bandeau sous l’accueil', cabinet: 'Le cabinet',
-    competences: 'Domaines d’intervention', equipe: 'L’équipe', honoraires: 'Honoraires', contact: 'Contact', pied: 'Pied de page',
+    competences: 'Domaines d’intervention', commercial: 'Droit commercial', equipe: 'L’équipe', honoraires: 'Honoraires', contact: 'Contact', pied: 'Pied de page',
   };
   let fields = [];
   const pending = new Map();

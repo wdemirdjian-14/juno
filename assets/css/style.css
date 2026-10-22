@@ -126,9 +126,9 @@ button { font: inherit; color: inherit; }
 }
 .hero-logo { display: block; width: min(86%, 440px); }
 .hero-logo img { width: 100%; }
-.hero-copy { max-width: 980px; text-align: center; }
+.hero-copy { max-width: 1240px; text-align: center; }
 .eyebrow { font-size: .8125rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--blue); margin-bottom: 18px; }
-.hero h1 { font: 800 clamp(2.6rem, 12vw, 7.5rem)/1 var(--display); letter-spacing: -.055em; color: var(--ink); margin-bottom: 24px; }
+.hero h1 { font: 800 clamp(2.4rem, min(11vw, 10.5vh), 7rem)/1 var(--display); letter-spacing: -.055em; color: var(--ink); margin-bottom: 24px; }
 .hero h1 span { display: block; }
 .hero h1 .l2 { color: var(--blue); }
 .lead { font-size: 1.0625rem; max-width: 560px; margin: 0 auto 28px; color: #2b2b2b; }
@@ -149,7 +149,7 @@ html:not(.motion) .hero .stage { grid-template-rows: auto auto; gap: 24px; }
 .manifesto { background: var(--pink); }
 .manifesto .stage { padding: 80px var(--gutter); display: flex; flex-direction: column; justify-content: center; }
 .manifesto .section-num { color: var(--ink); }
-.words { font: 800 clamp(1.75rem, 7.4vw, 4.4rem)/1.18 var(--display); letter-spacing: -.04em; max-width: 1150px; margin: 0; }
+.words { font: 800 clamp(1.6rem, min(7.4vw, 6.4vh), 4.4rem)/1.18 var(--display); letter-spacing: -.04em; max-width: 1150px; margin: 0; }
 .words b { color: var(--blue); font-weight: 800; }
 
 .cabinet { background: var(--pink-soft); }
@@ -192,18 +192,77 @@ html:not(.motion) .hero .stage { grid-template-rows: auto auto; gap: 24px; }
 .card p { max-width: 640px; }
 .card ul { margin: 0; }
 
-/* ---------- Équipe ---------- */
-.team-scene { background: var(--ink); }
-.team-scene .stage { position: relative; overflow: hidden; }
-.team-photo { margin: 0; position: relative; }
-.team-photo img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
-.team-photo figcaption {
-  position: absolute; inset: auto 0 0; padding: 60px var(--gutter) 24px;
-  display: grid; gap: 2px; color: #fff;
-  background: linear-gradient(transparent, rgba(0, 0, 0, .65));
+/* ---------- Droit commercial ---------- */
+.commercial { background: #121212; color: #fff; }
+.commercial .stage {
+  position: relative; overflow: hidden;
+  display: flex; align-items: center;
+  padding: calc(var(--hh) + 20px) var(--gutter) 36px;
 }
-.team-photo figcaption .section-num { color: var(--pink); margin-bottom: 6px; }
-.team-photo figcaption strong { font: 800 clamp(1.6rem, 7vw, 4rem)/1.05 var(--display); letter-spacing: -.04em; }
+.commercial-bignum {
+  position: absolute; right: -3vw; bottom: -4vh; pointer-events: none;
+  font: 800 min(62vw, 72vh)/.8 var(--display); letter-spacing: -.06em;
+  color: transparent; -webkit-text-stroke: 1.5px rgba(221, 174, 53, .2);
+  transform: translateX(calc((1 - var(--p, 1)) * 10vw));
+}
+.commercial-grid { position: relative; width: 100%; max-width: 1240px; margin: 0 auto; display: grid; gap: 22px; }
+.commercial .section-num { color: var(--gold); margin-bottom: 12px; }
+.commercial h2 { font-size: clamp(1.9rem, min(8.4vw, 6.6vh), 4.6rem); margin-bottom: 14px; }
+.commercial h2 em { display: block; font-style: normal; color: var(--gold); }
+.commercial-lead { margin: 0; max-width: 440px; color: #cfcbc4; }
+.deals { position: relative; list-style: none; margin: 0; padding: 0 0 0 20px; display: grid; gap: 10px; }
+.deals::before, .deals::after { content: ''; position: absolute; left: 0; top: 8px; bottom: 8px; width: 2px; border-radius: 2px; background: rgba(255, 255, 255, .14); }
+.deals::after { background: var(--gold); transform-origin: top; transform: scaleY(var(--fill, 1)); }
+.deal {
+  display: grid; grid-template-columns: 44px 1fr; column-gap: 14px; align-items: center;
+  padding: 12px 14px; margin: 0; border-radius: 16px;
+  background: rgba(255, 255, 255, .045); border: 1px solid rgba(255, 255, 255, .08);
+  transition: background .3s, border-color .3s, translate .4s var(--ease);
+}
+.deal:hover { background: rgba(255, 255, 255, .08); border-color: rgba(221, 174, 53, .45); translate: 6px 0; }
+.deal-icon { grid-row: 1 / span 2; width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; background: rgba(221, 174, 53, .13); }
+.deal-icon svg { width: 28px; height: 28px; fill: none; stroke: var(--gold); stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+.deal-num { font: 700 .75rem var(--text); letter-spacing: .12em; color: var(--gold); }
+.deal-text { font: 700 1rem/1.35 var(--display); letter-spacing: -.01em; }
+
+/* ---------- Équipe ---------- */
+.team-scene { background: var(--ink); color: #fff; }
+.team-scene .stage {
+  display: flex; align-items: center; justify-content: center;
+  padding: calc(var(--hh) + 16px) var(--gutter) 28px; overflow: hidden;
+}
+.team-photo { margin: 0; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 18px; }
+/* cadre au format exact de l'image : toute la photo est visible et tient dans l'écran */
+.frame {
+  position: relative; width: min(100%, calc(100svh - var(--hh) - 170px)); aspect-ratio: 1;
+  border-radius: 18px; overflow: hidden;
+}
+.frame picture, .frame img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.team-photo figcaption { display: grid; gap: 2px; text-align: center; }
+.team-photo figcaption .section-num { color: var(--pink); margin-bottom: 4px; }
+.team-photo figcaption strong { font: 800 clamp(1.5rem, min(6.5vw, 4.6vh), 3rem)/1.05 var(--display); letter-spacing: -.04em; }
+
+/* « Qui est qui » : étiquettes et flèches dessinées */
+.name-tag {
+  position: absolute; top: 3%; z-index: 2;
+  padding: 6px 13px; border-radius: 999px; background: #fff; color: var(--ink);
+  font: 700 .8125rem/1.2 var(--text); white-space: nowrap;
+  box-shadow: 0 6px 18px -6px rgba(0, 0, 0, .5);
+  opacity: 0; transform: translateY(calc(var(--ty, 0%) - 8px)) scale(.9);
+  transition: opacity .5s var(--ease), transform .5s var(--ease);
+}
+.tag-judith { left: 3%; }
+.tag-jade { right: 3%; transition-delay: .25s; }
+.who { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; filter: drop-shadow(0 1px 2px rgba(0, 0, 0, .6)); }
+.who path { fill: none; stroke: #fff; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 1; }
+.who-wide path { stroke-width: 1.5; }
+.who .arrow { transition: stroke-dashoffset .8s var(--ease) .3s; }
+.who .head { transition: stroke-dashoffset .3s ease-out 1.05s; }
+.who path:nth-of-type(n+3) { transition-delay: .55s; }
+.who .head:nth-of-type(4) { transition-delay: 1.3s; }
+.who-wide { display: none; }
+.names .name-tag { opacity: 1; transform: translateY(var(--ty, 0%)); }
+.names .who path { stroke-dashoffset: 0; }
 
 .team { background: #eceefc; }
 .team-grid { display: grid; gap: 18px; }
@@ -211,6 +270,11 @@ html:not(.motion) .hero .stage { grid-template-rows: auto auto; gap: 24px; }
 .person:nth-child(2) { border-color: var(--gold); }
 .person h3 { font: 800 clamp(1.8rem, 7vw, 2.8rem)/1.1 var(--display); letter-spacing: -.04em; margin-bottom: 8px; }
 .role { font-weight: 700; color: var(--blue); }
+.person-head { display: flex; align-items: center; gap: 16px; margin-bottom: 22px; }
+.person-head h3 { margin-bottom: 6px; }
+.person-head .role { margin: 0; }
+.portrait { flex: none; }
+.portrait img { width: 112px; aspect-ratio: 3 / 4; object-fit: cover; border-radius: 14px; box-shadow: 0 14px 28px -16px rgba(0, 0, 0, .55); }
 .memberships { padding-top: 18px; border-top: 1px solid var(--line); color: var(--muted); font-size: .9375rem; }
 .person a { font-weight: 700; overflow-wrap: anywhere; display: inline-block; padding: 8px 0; }
 
@@ -336,7 +400,7 @@ address { font-style: normal; }
 .motion .scene .stage { position: sticky; top: 0; height: 100svh; min-height: 0; }
 
 /* Accueil : le logo recule, le titre arrive ligne par ligne */
-.motion .hero { height: 240svh; }
+.motion .hero { height: 200svh; }
 .motion .hero .stage > * { grid-area: 1 / 1; }
 .motion .hero-logo {
   --t: clamp(0, var(--p, 0) * 3.2, 1);
@@ -348,11 +412,11 @@ address { font-style: normal; }
   opacity: clamp(0, (var(--p, 0) - var(--at)) * 7, 1);
   transform: translateY(calc((1 - clamp(0, (var(--p, 0) - var(--at)) * 7, 1)) * 40px));
 }
-.motion .hero-copy .eyebrow { --at: .16; }
-.motion .hero h1 .l1 { --at: .22; }
-.motion .hero h1 .l2 { --at: .34; }
-.motion .lead { --at: .46; }
-.motion .hero-actions { --at: .54; }
+.motion .hero-copy .eyebrow { --at: .1; }
+.motion .hero h1 .l1 { --at: .16; }
+.motion .hero h1 .l2 { --at: .25; }
+.motion .lead { --at: .33; }
+.motion .hero-actions { --at: .39; }
 .motion .hero-copy { pointer-events: none; }
 .motion .hero.ready .hero-copy { pointer-events: auto; }
 .motion .scroll-hint {
@@ -369,26 +433,29 @@ address { font-style: normal; }
 .motion .manifesto { height: 260svh; }
 .motion .words .w { opacity: clamp(.14, var(--p, 0) * var(--n) * 1.25 - var(--i), 1); transition: opacity .15s linear; }
 
-/* Équipe : la photo s'ouvre jusqu'au plein écran */
-.motion .team-scene { height: 220svh; }
-.motion .team-scene .stage { display: grid; place-items: center; }
-.motion .team-photo { position: absolute; inset: 0; }
-.motion .team-photo picture {
-  --t: clamp(0, var(--p, 0) * 1.8, 1);
-  display: block; height: 100%;
-  clip-path: inset(calc((1 - var(--t)) * 22%) calc((1 - var(--t)) * 8%) round calc((1 - var(--t)) * 28px));
+/* Équipe : la photo s'ouvre, puis les flèches désignent chaque associée */
+.motion .team-scene { height: 200svh; }
+.motion .frame {
+  --t: clamp(0, var(--p, 0) * 2.2, 1);
+  clip-path: inset(calc((1 - var(--t)) * 16%) calc((1 - var(--t)) * 16%) round 18px);
 }
-.motion .team-photo img { height: 100%; aspect-ratio: auto; object-position: 56% 8%; transform-origin: 56% 30%; transform: scale(calc(1.18 - var(--p, 0) * .18)); }
+.motion .frame img { transform: scale(calc(1.14 - clamp(0, var(--p, 0) * 2.2, 1) * .14)); }
 .motion .team-photo figcaption {
-  --t: clamp(0, (var(--p, 0) - .5) * 4, 1);
-  opacity: var(--t); transform: translateY(calc((1 - var(--t)) * 30px));
-  padding-bottom: calc(40px + env(safe-area-inset-bottom));
+  --t: clamp(0, (var(--p, 0) - .35) * 5, 1);
+  opacity: var(--t); transform: translateY(calc((1 - var(--t)) * 24px));
 }
 
-@media (max-width: 699px) {
-  .team-photo img { aspect-ratio: 1; }
-  .motion .team-photo { position: relative; inset: auto; width: 100%; aspect-ratio: 1; margin-top: calc(var(--hh) / 2); }
-  .motion .team-photo img { object-position: 50% 50%; transform-origin: 50% 40%; }
+/* Droit commercial : la ligne dorée se remplit, chaque prestation s'allume et son icône se dessine */
+.motion .commercial { height: 230svh; }
+.motion .deals::after { --fill: clamp(0, (var(--p, 0) - .1) * 1.6, 1); }
+.motion .deal {
+  --t: clamp(0, (var(--p, 0) - .12 - var(--k) * .14) * 6, 1);
+  opacity: calc(.18 + var(--t) * .82);
+  transform: translateX(calc((1 - var(--t)) * 36px));
+}
+.motion .deal-icon path, .motion .deal-icon circle {
+  stroke-dasharray: 1;
+  stroke-dashoffset: calc(1 - clamp(0, (var(--p, 0) - .12 - var(--k) * .14) * 6, 1));
 }
 
 /* =========================================================
@@ -403,6 +470,18 @@ address { font-style: normal; }
   .hero-meta { flex-direction: row; justify-content: space-between; }
   .field-row { grid-template-columns: 1fr 1fr; }
   .card { padding: 44px 48px 48px; }
+  .frame { width: min(100%, calc((100svh - var(--hh) - 160px) * 4 / 3)); aspect-ratio: 4 / 3; }
+  .who-wide { display: block; }
+  .who-square { display: none; }
+  /* étiquettes accrochées au départ de chaque flèche */
+  .name-tag { --ty: -50%; top: 12%; font-size: clamp(.875rem, 1.05vw, 1.125rem); padding: .5em 1.1em; }
+  .tag-judith { left: auto; right: 79.5%; }
+  .tag-jade { right: auto; left: 79.5%; }
+  .portrait img { width: 150px; }
+  .deal { padding: 16px 20px; grid-template-columns: 52px 1fr; column-gap: 18px; }
+  .deal-icon { width: 52px; height: 52px; }
+  .deal-icon svg { width: 32px; height: 32px; }
+  .deal-text { font-size: 1.2rem; }
   .card ul { columns: 2; column-gap: 40px; }
   .card li { break-inside: avoid; }
   .team-grid, .fees-grid { grid-template-columns: 1fr 1fr; }
@@ -448,7 +527,8 @@ address { font-style: normal; }
   .approach-list li { font-size: 1.6rem; }
   .commitment { margin-left: calc((100% - 7vw) * .45 + 7vw); }
   .stack { gap: 40px; }
-  .team-photo figcaption { padding-inline: var(--gutter); }
+  .commercial-grid { grid-template-columns: .9fr 1.1fr; align-items: center; gap: 6vw; }
+  .deals { gap: 14px; }
   .fees-grid { gap: 6vw; }
   .contact-list { grid-template-columns: 1fr 1fr 1fr; }
   .contact-address { grid-column: auto; }

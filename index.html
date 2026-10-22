@@ -11,7 +11,7 @@
 <meta property="og:image" content="assets/img/juno-identite.jpg">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="assets/fonts.css">
-<link rel="stylesheet" href="assets/css/style.css?v=4">
+<link rel="stylesheet" href="assets/css/style.css?v=5">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231527ac'/%3E%3Cpath d='M12 20h13v22c0 3-1 5-4 5s-4-2-4-5H4c0 11 7 18 17 18s17-7 17-18V20z' fill='%23f6c1b4'/%3E%3C/svg%3E">
 <script>document.documentElement.classList.add('js');if(!matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('motion')</script>
 </head>
@@ -157,16 +157,64 @@
     </div>
   </section>
 
+  <!-- 3 bis. Droit commercial : scène épinglée, les prestations s'allument une à une -->
+  <section class="commercial scene" id="commercial" data-group="commercial" data-scene>
+    <div class="stage">
+      <span class="commercial-bignum" aria-hidden="true">05</span>
+      <div class="commercial-grid">
+        <div class="commercial-intro">
+          <p class="section-num" data-edit="commercial-01">Expertise 05</p>
+          <h2><span data-edit="commercial-02">Droit commercial</span> <em data-edit="commercial-03">&amp; concurrence déloyale</em></h2>
+          <p class="commercial-lead" data-edit="commercial-04">Nous accompagnons entreprises et entrepreneurs dans le cadre de :</p>
+        </div>
+        <ol class="deals">
+          <li class="deal" style="--k:0">
+            <span class="deal-icon" aria-hidden="true"><svg viewBox="0 0 48 48"><path pathLength="1" d="M14 4h14l8 8v28a2 2 0 0 1-2 2H14a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><path pathLength="1" d="M28 4v8h8M18 20h12M18 26h12M18 32h8"/></svg></span>
+            <span class="deal-num">5.1</span>
+            <span class="deal-text" data-edit="commercial-05">Rédaction de CGV / CGU</span>
+          </li>
+          <li class="deal" style="--k:1">
+            <span class="deal-icon" aria-hidden="true"><svg viewBox="0 0 48 48"><path pathLength="1" d="M20 28a7 7 0 0 1 0-10l5-5a7 7 0 0 1 10 10l-3 3"/><path pathLength="1" d="M28 20a7 7 0 0 1 0 10l-5 5a7 7 0 0 1-10-10l3-3"/></svg></span>
+            <span class="deal-num">5.2</span>
+            <span class="deal-text" data-edit="commercial-06">Rédaction de contrats de partenariat, prestations de services, apport d’affaires</span>
+          </li>
+          <li class="deal" style="--k:2">
+            <span class="deal-icon" aria-hidden="true"><svg viewBox="0 0 48 48"><circle pathLength="1" cx="21" cy="21" r="11"/><path pathLength="1" d="m29 29 11 11M16 21h10M21 16v10"/></svg></span>
+            <span class="deal-num">5.3</span>
+            <span class="deal-text" data-edit="commercial-07">Saisies dites « 145 » à fin d’établissement de preuves</span>
+          </li>
+          <li class="deal" style="--k:3">
+            <span class="deal-icon" aria-hidden="true"><svg viewBox="0 0 48 48"><path pathLength="1" d="M24 6v34M14 40h20M10 12h28M24 9a2 2 0 1 0 0 .1"/><path pathLength="1" d="m10 12-6 13a6 6 0 0 0 12 0zM38 12l-6 13a6 6 0 0 0 12 0z"/></svg></span>
+            <span class="deal-num">5.4</span>
+            <span class="deal-text" data-edit="commercial-08">Actions en concurrence déloyale et parasitisme</span>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
   <!-- 4. L'équipe : la photo s'ouvre en plein écran -->
   <section class="team-scene scene" id="equipe" data-group="equipe" data-scene>
     <div class="stage">
       <figure class="team-photo">
+        <div class="frame">
         <picture>
           <source media="(max-width: 699px)" type="image/webp" srcset="assets/img/equipe-carre-900.webp">
           <source media="(max-width: 699px)" srcset="assets/img/equipe-carre-900.jpg">
           <source type="image/webp" srcset="assets/img/equipe-900.webp 900w, assets/img/equipe-1600.webp 1600w" sizes="100vw">
           <img src="assets/img/equipe-1600.jpg" srcset="assets/img/equipe-900.jpg 900w, assets/img/equipe-1600.jpg 1600w" sizes="100vw" width="1600" height="1199" loading="lazy" decoding="async" alt="Judith Caillot et Jade Tellini, les deux avocates associées du cabinet JUNO">
         </picture>
+        <svg class="who who-wide" viewBox="0 0 400 300" aria-hidden="true">
+          <path class="arrow" pathLength="1" d="M82 36C114 30 132 42 140 62"/><path class="head" pathLength="1" d="M131.1 55.8 140 62l2.3-10.6"/>
+          <path class="arrow" pathLength="1" d="M318 36C300 32 292 46 296 64"/><path class="head" pathLength="1" d="M288.2 56.5 296 64l3.9-10.1"/>
+        </svg>
+        <svg class="who who-square" viewBox="0 0 300 300" aria-hidden="true">
+          <path class="arrow" pathLength="1" d="M34 40C40 56 58 60 76 56"/><path class="head" pathLength="1" d="m66 50 10 6-9 7"/>
+          <path class="arrow" pathLength="1" d="M262 42C258 58 236 66 218 64"/><path class="head" pathLength="1" d="m228 57-10 7 10 6"/>
+        </svg>
+        <span class="name-tag tag-judith" data-edit="equipe-18">Judith Caillot</span>
+        <span class="name-tag tag-jade" data-edit="equipe-19">Jade Tellini</span>
+        </div>
         <figcaption>
           <span class="section-num" data-edit="equipe-01">03 — L’équipe</span>
           <strong data-edit="equipe-02">Judith Caillot &amp; Jade Tellini</strong>
@@ -180,8 +228,16 @@
     <h2 class="sr-only">L’équipe</h2>
     <div class="team-grid">
       <article class="person reveal">
-        <h3 data-edit="equipe-04">Judith Caillot</h3>
-        <p class="role" data-edit="equipe-05">Avocate associée · Barreau de Paris</p>
+        <div class="person-head">
+          <picture class="portrait">
+            <source type="image/webp" srcset="assets/img/portrait-judith-360.webp 360w, assets/img/portrait-judith-720.webp 720w" sizes="(min-width: 700px) 150px, 112px">
+            <img src="assets/img/portrait-judith-360.jpg" srcset="assets/img/portrait-judith-360.jpg 360w, assets/img/portrait-judith-720.jpg 720w" sizes="(min-width: 700px) 150px, 112px" width="360" height="480" loading="lazy" decoding="async" alt="Portrait de Judith Caillot">
+          </picture>
+          <div>
+            <h3 data-edit="equipe-04">Judith Caillot</h3>
+            <p class="role" data-edit="equipe-05">Avocate associée · Barreau de Paris</p>
+          </div>
+        </div>
         <p data-edit="equipe-06">Inscrite au Barreau de Paris depuis 2014, Judith Caillot est titulaire d’un Master 2 Droit des Nouvelles Propriétés de l’Université Paris XI à Sceaux.</p>
         <p data-edit="equipe-07">Avocate au barreau, Me Judith Caillot intervient en propriété intellectuelle, tant en matière de droit d’auteur que de propriété industrielle.</p>
         <p data-edit="equipe-08">Elle a exercé au sein de cabinets spécialisés de référence, où elle a acquis une solide expérience dans la gestion stratégique des actifs immatériels et la conduite de contentieux complexes.</p>
@@ -190,8 +246,16 @@
         <a href="mailto:jcaillot@juno-avocates.fr">jcaillot@juno-avocates.fr</a>
       </article>
       <article class="person reveal">
-        <h3 data-edit="equipe-11">Jade Tellini</h3>
-        <p class="role" data-edit="equipe-12">Avocate associée · Barreau de Paris</p>
+        <div class="person-head">
+          <picture class="portrait">
+            <source type="image/webp" srcset="assets/img/portrait-jade-360.webp 360w, assets/img/portrait-jade-720.webp 720w" sizes="(min-width: 700px) 150px, 112px">
+            <img src="assets/img/portrait-jade-360.jpg" srcset="assets/img/portrait-jade-360.jpg 360w, assets/img/portrait-jade-720.jpg 720w" sizes="(min-width: 700px) 150px, 112px" width="360" height="480" loading="lazy" decoding="async" alt="Portrait de Jade Tellini">
+          </picture>
+          <div>
+            <h3 data-edit="equipe-11">Jade Tellini</h3>
+            <p class="role" data-edit="equipe-12">Avocate associée · Barreau de Paris</p>
+          </div>
+        </div>
         <p data-edit="equipe-13">Avocate au barreau, Me Jade Tellini exerce en propriété intellectuelle depuis le début de sa carrière.</p>
         <p data-edit="equipe-14">Elle a développé son expertise au sein de cabinets spécialisés et reconnus dans les domaines du droit d’auteur, du droit de la musique et du droit des marques.</p>
         <p data-edit="equipe-15">Elle accompagne une clientèle composée d’entreprises, de créateurs et d’acteurs des industries culturelles, en conseil comme en contentieux.</p>
@@ -323,6 +387,6 @@
   </div>
 </dialog>
 
-<script src="assets/js/main.js?v=4" defer></script>
+<script src="assets/js/main.js?v=5" defer></script>
 </body>
 </html>

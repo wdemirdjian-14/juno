@@ -24,7 +24,7 @@ if ('IntersectionObserver' in window) {
     const g = e.target.id;
     if (e.isIntersecting && !seen.has(g)) { seen.add(g); track({ t: 'sec', v: g }); so.unobserve(e.target); }
   }), { threshold: 0.25 });
-  ['accueil', 'cabinet', 'competences', 'equipe', 'honoraires', 'contact'].forEach(id => {
+  ['accueil', 'cabinet', 'competences', 'commercial', 'equipe', 'honoraires', 'contact'].forEach(id => {
     const el = document.getElementById(id);
     if (el) so.observe(el);
   });
@@ -80,15 +80,17 @@ if (motion && 'IntersectionObserver' in window) {
   });
 } else {
   document.querySelectorAll('.reveal').forEach(el => el.classList.add('in'));
+  document.querySelector('.team-scene')?.classList.add('names');
 }
 
 /* ---------- Scènes épinglées et cartes empilées ---------- */
 const scenes = [...document.querySelectorAll('[data-scene]')];
 // --p est posé directement sur chaque élément animé : Safari (iPhone) ne rafraîchit pas
 // toujours les enfants quand seule la variable du parent change
-const ANIMATED = '.hero-logo, .hero-copy .eyebrow, .hero h1 span, .lead, .hero-actions, .scroll-hint, .w, .team-photo picture, .team-photo img, .team-photo figcaption';
+const ANIMATED = '.hero-logo, .hero-copy .eyebrow, .hero h1 span, .lead, .hero-actions, .scroll-hint, .w, .frame, .frame img, .team-photo figcaption, .commercial-bignum, .deals, .deal, .deal-icon path, .deal-icon circle';
 const sceneParts = new Map(scenes.map(s => [s, [s, ...s.querySelectorAll(ANIMATED)]]));
 const hero = document.querySelector('.hero');
+const team = document.querySelector('.team-scene');
 const cards = [...document.querySelectorAll('.stack .card')];
 const navLinks = [...document.querySelectorAll('.main-nav a')];
 const sections = navLinks.map(a => document.querySelector(a.getAttribute('href')));
@@ -116,7 +118,8 @@ function update() {
       if (s.dataset.p === p) return;
       s.dataset.p = p;
       sceneParts.get(s).forEach(el => el.style.setProperty('--p', p));
-      if (s === hero) hero.classList.toggle('ready', p > .5);
+      if (s === hero) hero.classList.toggle('ready', p > .4);
+      if (s === team) team.classList.toggle('names', p > .45);
     });
 
     cards.forEach((card, i) => {
