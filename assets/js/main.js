@@ -24,7 +24,7 @@ if ('IntersectionObserver' in window) {
     const g = e.target.id;
     if (e.isIntersecting && !seen.has(g)) { seen.add(g); track({ t: 'sec', v: g }); so.unobserve(e.target); }
   }), { threshold: 0.25 });
-  ['accueil', 'cabinet', 'competences', 'equipe', 'honoraires', 'commercial', 'contact'].forEach(id => {
+  ['accueil', 'cabinet', 'competences', 'equipe', 'honoraires', 'contact'].forEach(id => {
     const el = document.getElementById(id);
     if (el) so.observe(el);
   });
@@ -87,7 +87,7 @@ if (motion && 'IntersectionObserver' in window) {
 const scenes = [...document.querySelectorAll('[data-scene]')];
 // --p est posé directement sur chaque élément animé : Safari (iPhone) ne rafraîchit pas
 // toujours les enfants quand seule la variable du parent change
-const ANIMATED = '.hero-logo, .hero-copy .eyebrow, .hero h1 span, .lead, .hero-actions, .scroll-hint, .w, .frame, .frame img, .team-photo figcaption, .commercial-bignum, .deals, .deal, .deal-icon path, .deal-icon circle';
+const ANIMATED = '.hero-logo, .hero-copy .eyebrow, .hero h1 span, .lead, .hero-actions, .scroll-hint, .w, .frame, .frame img, .team-photo figcaption';
 const sceneParts = new Map(scenes.map(s => [s, [s, ...s.querySelectorAll(ANIMATED)]]));
 const hero = document.querySelector('.hero');
 const team = document.querySelector('.team-scene');

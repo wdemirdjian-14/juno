@@ -189,8 +189,10 @@ html:not(.motion) .hero .stage { grid-template-rows: auto auto; gap: 24px; }
 .card-4 { background: var(--gold); }
 .card-5 { background: #e3e6fb; }
 .card-5 .card-num { color: var(--blue); opacity: 1; }
-.card-6 { background: var(--ink); color: #fff; }
-.card-6 .card-num { color: var(--gold); opacity: 1; }
+.card-6 { background: #fff; box-shadow: inset 0 0 0 2px var(--gold), 0 18px 40px -24px rgba(0, 0, 0, .25); }
+.card-6 .card-num { color: #9a7412; opacity: 1; }
+.card-7 { background: var(--ink); color: #fff; }
+.card-7 .card-num { color: var(--gold); opacity: 1; }
 .card li { font-size: .9375rem; line-height: 1.5; }
 @media (max-width: 699px) {
   /* cartes compactes : chacune tient dans l'écran, même sur un petit téléphone */
@@ -204,39 +206,6 @@ html:not(.motion) .hero .stage { grid-template-rows: auto auto; gap: 24px; }
 .card h3 { font: 800 clamp(1.6rem, 6.6vw, 3rem)/1.08 var(--display); letter-spacing: -.04em; margin-bottom: 16px; }
 .card p { max-width: 640px; }
 .card ul { margin: 0; }
-
-/* ---------- Droit commercial ---------- */
-.commercial { background: #121212; color: #fff; }
-.commercial .stage {
-  position: relative; overflow: hidden;
-  display: flex; align-items: center;
-  padding: calc(var(--hh) + 20px) var(--gutter) 36px;
-}
-.commercial-bignum {
-  position: absolute; right: -3vw; bottom: -4vh; pointer-events: none;
-  font: 800 min(62vw, 72vh)/.8 var(--display); letter-spacing: -.06em;
-  color: transparent; -webkit-text-stroke: 1.5px rgba(221, 174, 53, .2);
-  transform: translateX(calc((1 - var(--p, 1)) * 10vw));
-}
-.commercial-grid { position: relative; width: 100%; max-width: 1240px; margin: 0 auto; display: grid; gap: 22px; }
-.commercial .section-num { color: var(--gold); margin-bottom: 12px; }
-.commercial h2 { font-size: clamp(1.9rem, min(8.4vw, 6.6vh), 4.6rem); margin-bottom: 14px; }
-.commercial h2 em { display: block; font-style: normal; color: var(--gold); }
-.commercial-lead { margin: 0; max-width: 440px; color: #cfcbc4; }
-.deals { position: relative; list-style: none; margin: 0; padding: 0 0 0 20px; display: grid; gap: 10px; }
-.deals::before, .deals::after { content: ''; position: absolute; left: 0; top: 8px; bottom: 8px; width: 2px; border-radius: 2px; background: rgba(255, 255, 255, .14); }
-.deals::after { background: var(--gold); transform-origin: top; transform: scaleY(var(--fill, 1)); }
-.deal {
-  display: grid; grid-template-columns: 44px 1fr; column-gap: 14px; align-items: center;
-  padding: 12px 14px; margin: 0; border-radius: 16px;
-  background: rgba(255, 255, 255, .045); border: 1px solid rgba(255, 255, 255, .08);
-  transition: background .3s, border-color .3s, translate .4s var(--ease);
-}
-.deal:hover { background: rgba(255, 255, 255, .08); border-color: rgba(221, 174, 53, .45); translate: 6px 0; }
-.deal-icon { grid-row: 1 / span 2; width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; background: rgba(221, 174, 53, .13); }
-.deal-icon svg { width: 28px; height: 28px; fill: none; stroke: var(--gold); stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
-.deal-num { font: 700 .75rem var(--text); letter-spacing: .12em; color: var(--gold); }
-.deal-text { font: 700 1rem/1.35 var(--display); letter-spacing: -.01em; }
 
 /* ---------- Équipe ---------- */
 .team-scene { background: var(--ink); color: #fff; }
@@ -507,19 +476,6 @@ address { font-style: normal; }
   opacity: var(--t); transform: translateY(calc((1 - var(--t)) * 24px));
 }
 
-/* Droit commercial : la ligne dorée se remplit, chaque prestation s'allume et son icône se dessine */
-.motion .commercial { height: 230svh; }
-.motion .deals::after { --fill: clamp(0, (var(--p, 0) - .1) * 1.6, 1); }
-.motion .deal {
-  --t: clamp(0, (var(--p, 0) - .12 - var(--k) * .14) * 6, 1);
-  opacity: calc(.18 + var(--t) * .82);
-  transform: translateX(calc((1 - var(--t)) * 36px));
-}
-.motion .deal-icon path, .motion .deal-icon circle {
-  stroke-dasharray: 1;
-  stroke-dashoffset: calc(1 - clamp(0, (var(--p, 0) - .12 - var(--k) * .14) * 6, 1));
-}
-
 /* =========================================================
    Tablette et plus
    ========================================================= */
@@ -540,10 +496,6 @@ address { font-style: normal; }
   .tag-judith { left: auto; right: 79.5%; }
   .tag-jade { right: auto; left: 79.5%; }
   .portrait img { width: 150px; }
-  .deal { padding: 16px 20px; grid-template-columns: 52px 1fr; column-gap: 18px; }
-  .deal-icon { width: 52px; height: 52px; }
-  .deal-icon svg { width: 32px; height: 32px; }
-  .deal-text { font-size: 1.2rem; }
   .card ul { columns: 2; column-gap: 40px; }
   .card li { break-inside: avoid; font-size: 1rem; line-height: 1.6; }
   .team-grid, .fees-grid { grid-template-columns: 1fr 1fr; }
@@ -592,8 +544,6 @@ address { font-style: normal; }
   .approach-list li { font-size: 1.6rem; }
   .commitment { margin-left: calc((100% - 7vw) * .45 + 7vw); }
   .stack { gap: 40px; }
-  .commercial-grid { grid-template-columns: .9fr 1.1fr; align-items: center; gap: 6vw; }
-  .deals { gap: 14px; }
   .fees-grid { gap: 6vw; }
   .contact-list { grid-template-columns: 1fr 1fr 1fr; }
   .contact-address { grid-column: auto; }
