@@ -111,14 +111,13 @@ ${p('Répondez directement à cet e-mail : votre réponse partira vers le visite
 ${p(`Bonjour${name ? ` ${esc(name)}` : ''},`)}
 ${p(`Merci d’avoir contacté le cabinet JUNO Avocat·es. Nous avons bien reçu votre demande${topic ? ` concernant <strong>${esc(topic)}</strong>` : ''}.`)}
 ${p('Notre équipe va l’étudier avec attention et revient vers vous <strong>dans les plus brefs délais</strong>.')}
-${box(`<strong>Besoin de nous joindre rapidement ?</strong><br>Judith Caillot — <a href="tel:+33659929639" style="color:${C.blue};text-decoration:none;">+33 6 59 92 96 39</a><br>Jade Tellini — <a href="tel:+33667995607" style="color:${C.blue};text-decoration:none;">+33 6 67 99 56 07</a>`)}
-${p('Vous pouvez répondre à cet e-mail pour compléter votre demande.', `color:${C.muted};font-size:14px;`)}
+${box(`<strong>Une précision à ajouter ?</strong><br>Répondez simplement à cet e-mail : votre message sera joint à votre demande.`)}
 ${signature}`,
     });
     return send({
       to: { name, address: msg.email },
       subject: 'Votre message a bien été envoyé — JUNO Avocat·es',
-      text: `Bonjour${name ? ` ${name}` : ''},\n\nMerci d’avoir contacté le cabinet JUNO Avocat·es. Nous avons bien reçu votre demande${topic ? ` concernant « ${topic} »` : ''}.\nNotre équipe va l’étudier avec attention et revient vers vous dans les plus brefs délais.\n\nBesoin de nous joindre rapidement ?\nJudith Caillot — +33 6 59 92 96 39\nJade Tellini — +33 6 67 99 56 07\n\nBien cordialement,\nL’équipe JUNO Avocat·es\n49 rue Saint-Roch, 75001 Paris`,
+      text: `Bonjour${name ? ` ${name}` : ''},\n\nMerci d’avoir contacté le cabinet JUNO Avocat·es. Nous avons bien reçu votre demande${topic ? ` concernant « ${topic} »` : ''}.\nNotre équipe va l’étudier avec attention et revient vers vous dans les plus brefs délais.\n\nUne précision à ajouter ? Répondez simplement à cet e-mail.\n\nBien cordialement,\nL’équipe JUNO Avocat·es\n49 rue Saint-Roch, 75001 Paris`,
       html,
       headers: { 'Auto-Submitted': 'auto-replied' },
     });
