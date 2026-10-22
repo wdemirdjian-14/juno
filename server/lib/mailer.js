@@ -10,8 +10,8 @@ const nl2br = s => esc(s).replace(/\r?\n/g, '<br>');
 
 // sujets proposés par le formulaire : seuls ceux-ci sont repris dans l'accusé de réception
 const TOPICS = [
-  'Propriété littéraire et artistique', 'Droit de la musique', 'Droit de l’édition',
-  'Propriété industrielle (marques, dessins et modèles)', 'Droit commercial et concurrence déloyale', 'Autre demande',
+  'Propriété littéraire et artistique', 'Droit de la musique', 'Droit de l’audiovisuel', 'Droit de l’édition',
+  'Propriété industrielle (marques, dessins et modèles)', 'Image et vie privée', 'Droit commercial et concurrence déloyale', 'Autre demande',
 ];
 
 const C = { ink: '#161616', muted: '#5f5d59', blue: '#1527ac', pink: '#f6c1b4', paper: '#fbf8f3', line: '#e6e0d7', gold: '#ddae35' };

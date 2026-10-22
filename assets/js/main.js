@@ -174,6 +174,32 @@ function closeContact() {
   else done();
 }
 
+/* ---------- Mentions légales ---------- */
+const legal = document.getElementById('mentions-legales');
+function openLegal(e) {
+  e?.preventDefault();
+  setMenu(false);
+  if (legal.open) return;
+  if (location.hash !== '#mentions-legales') history.replaceState(null, '', '#mentions-legales');
+  legal.showModal();
+  legal.scrollTop = 0;
+}
+function closeLegal() {
+  if (!legal.open) return;
+  legal.classList.add('closing');
+  const done = () => { legal.classList.remove('closing'); legal.close(); };
+  if (motion) legal.addEventListener('animationend', done, { once: true }); else done();
+}
+legal.addEventListener('close', () => {
+  if (location.hash === '#mentions-legales') history.replaceState(null, '', location.pathname + location.search);
+});
+legal.addEventListener('cancel', e => { e.preventDefault(); closeLegal(); });
+legal.addEventListener('click', e => { if (e.target === legal) closeLegal(); });
+document.querySelectorAll('[data-open-legal]').forEach(a => a.addEventListener('click', openLegal));
+document.querySelectorAll('[data-close-legal]').forEach(b => b.addEventListener('click', closeLegal));
+if (location.hash === '#mentions-legales') openLegal();
+addEventListener('hashchange', () => { if (location.hash === '#mentions-legales') openLegal(); });
+
 let autoClose = null;
 let toastAfterClose = false;
 const siteToast = document.getElementById('site-toast');

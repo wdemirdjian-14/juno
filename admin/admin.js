@@ -399,7 +399,7 @@
   /* ---------- Textes ---------- */
   const GROUPS = {
     meta: 'Onglet du navigateur', accueil: 'Accueil', bandeau: 'Bandeau sous l’accueil', cabinet: 'Le cabinet',
-    competences: 'Domaines d’intervention', equipe: 'L’équipe', honoraires: 'Honoraires', commercial: 'Droit commercial', contact: 'Contact', pied: 'Pied de page',
+    competences: 'Domaines d’intervention', equipe: 'L’équipe', honoraires: 'Honoraires', commercial: 'Droit commercial', contact: 'Contact', pied: 'Pied de page', mentions: 'Mentions légales',
   };
   let fields = [];
   const pending = new Map();
