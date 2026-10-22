@@ -20,5 +20,8 @@ mailer.verify()
     if (/535|Username and Password not accepted|BadCredentials/i.test(err.message)) {
       console.error('→ Google refuse l’identifiant : utilisez un « mot de passe d’application » (16 lettres), pas le mot de passe habituel.');
     }
+    if (/relay|5\.7\.1|550/i.test(err.message) && /relay/.test(process.env.SMTP_HOST)) {
+      console.error('→ Google refuse le relais : vérifiez dans admin.google.com que l’adresse IP du serveur est autorisée (le réglage peut mettre jusqu’à une heure à s’appliquer).');
+    }
     process.exit(1);
   });

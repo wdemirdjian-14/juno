@@ -25,19 +25,39 @@ echo "Messagerie détectée : $PROVIDER → $HOST:$PORT"
 read -r -p "Serveur d'envoi [$HOST] : " IN; HOST=${IN:-$HOST}
 read -r -p "Port [$PORT] : " IN; PORT=${IN:-$PORT}
 
+MODE=password
 if [ "$HOST" = "smtp.gmail.com" ]; then
   echo
-  echo "Google demande un « mot de passe d'application » (16 lettres), pas le mot de passe habituel :"
-  echo "  myaccount.google.com → Sécurité → Validation en deux étapes (activée) → Mots de passe des applications"
+  echo "Deux façons d'envoyer avec Google Workspace :"
+  echo "  1) mot de passe d'application (16 lettres)"
+  echo "  2) relais SMTP Google : sans mot de passe, ce serveur est autorisé par son adresse IP"
+  echo "     (à configurer d'abord dans admin.google.com → Gmail → Routage → Service de relais SMTP)"
+  read -r -p "Votre choix [2] : " IN
+  [ "${IN:-2}" = "1" ] || MODE=relay
 fi
-read -r -s -p "Mot de passe de $ADDR : " PASS; echo
-[ -n "$PASS" ] || { echo "Mot de passe vide, abandon."; exit 1; }
-PASS=${PASS// /}   # Google affiche le mot de passe d'application par groupes de 4 lettres
 
 # réglages conservés, seules les lignes e-mail sont remplacées
 touch "$ENV_FILE"
-sed -i '/^\s*#\?\s*\(SMTP_HOST\|SMTP_PORT\|SMTP_USER\|SMTP_PASS\|SMTP_PASS_B64\|SMTP_FROM\|NOTIFY_TO\|SITE_URL\)=/d' "$ENV_FILE"
-cat >> "$ENV_FILE" <<CONF
+sed -i '/^\s*#\?\s*\(SMTP_HOST\|SMTP_PORT\|SMTP_USER\|SMTP_PASS\|SMTP_PASS_B64\|SMTP_FROM\|SMTP_HELO\|NOTIFY_TO\|REPLY_BCC\|SITE_URL\)=/d' "$ENV_FILE"
+
+if [ "$MODE" = relay ]; then
+  IP=$(curl -4 -s --max-time 5 ifconfig.me || echo "?")
+  echo "→ Relais SMTP : l'adresse IP de ce serveur ($IP) doit être autorisée dans la console Google."
+  cat >> "$ENV_FILE" <<CONF
+SMTP_HOST=smtp-relay.gmail.com
+SMTP_PORT=587
+SMTP_HELO=juno-avocates-paris.walautao.fr
+SMTP_FROM="JUNO Avocat·es <$ADDR>"
+NOTIFY_TO=$ADDR
+REPLY_BCC=$ADDR
+SITE_URL=https://juno-avocates-paris.walautao.fr
+CONF
+else
+  [ "$HOST" = "smtp.gmail.com" ] && echo "Mot de passe d'application : myaccount.google.com/apppasswords (connecté avec $ADDR)"
+  read -r -s -p "Mot de passe de $ADDR : " PASS; echo
+  [ -n "$PASS" ] || { echo "Mot de passe vide, abandon."; exit 1; }
+  PASS=${PASS// /}   # Google affiche le mot de passe d'application par groupes de 4 lettres
+  cat >> "$ENV_FILE" <<CONF
 SMTP_HOST=$HOST
 SMTP_PORT=$PORT
 SMTP_USER=$ADDR
@@ -46,9 +66,10 @@ SMTP_FROM="JUNO Avocat·es <$ADDR>"
 NOTIFY_TO=$ADDR
 SITE_URL=https://juno-avocates-paris.walautao.fr
 CONF
+  unset PASS
+fi
 chown root:www-data "$ENV_FILE"
 chmod 640 "$ENV_FILE"
-unset PASS
 
 echo "→ Installation du module d'envoi"
 (cd "$SITE/server" && sudo -u www-data env npm_config_cache=/tmp/juno-npm npm install --omit=dev --no-audit --no-fund --loglevel=error)

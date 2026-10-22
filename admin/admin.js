@@ -351,7 +351,7 @@
               } catch (ex) { toast(ex.message); btn.disabled = false; }
             },
           }, replyInput,
-          h('p', { class: 'hint' }, `Envoyée depuis ${mailInfo.sender} : elle apparaîtra aussi dans « Messages envoyés » de cette boîte.`),
+          h('p', { class: 'hint' }, mailInfo.copyTo ? `Envoyée depuis ${mailInfo.sender}. Une copie arrive dans la boîte ${mailInfo.copyTo}.` : `Envoyée depuis ${mailInfo.sender} : elle apparaîtra aussi dans « Messages envoyés » de cette boîte.`),
           h('button', { class: 'btn primary', type: 'submit' }, replies.length ? 'Envoyer une nouvelle réponse' : 'Envoyer la réponse'))
           : h('p', { class: 'hint' }, 'Les e-mails ne sont pas encore configurés sur le serveur : répondez depuis votre messagerie en cliquant sur l’adresse ci-dessus.')),
 

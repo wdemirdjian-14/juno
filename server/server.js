@@ -165,7 +165,7 @@ async function route(req, res) {
   if (!auth.isAuthenticated(req)) return send(res, 401, { error: 'Non connecté' });
 
   if (route === 'me' && method === 'GET') {
-    return send(res, 200, { ok: true, mail: mailer.enabled(), sender: mailer.sender(), unread: messages.all().filter(m => !m.archived && m.status === 'nouveau').length });
+    return send(res, 200, { ok: true, mail: mailer.enabled(), sender: mailer.sender(), copyTo: mailer.copyTo(), unread: messages.all().filter(m => !m.archived && m.status === 'nouveau').length });
   }
 
   if (route === 'stats' && method === 'GET') {

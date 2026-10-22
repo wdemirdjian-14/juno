@@ -64,7 +64,9 @@ function create({ siteDir }) {
         host: process.env.SMTP_HOST,
         port,
         secure: port === 465,
+        // relais SMTP Google Workspace : pas d'identifiant, le serveur est reconnu par son adresse IP
         auth: user ? { user, pass } : undefined,
+        name: process.env.SMTP_HELO || undefined,
       });
     } catch (err) {
       console.error('E-mails désactivés (nodemailer absent) :', err.message);
@@ -144,7 +146,8 @@ Le ${esc(sent)}, vous nous avez écrit (${esc(msg.sujet)}) :<br><br>${nl2br(msg.
 
   return {
     enabled: () => Boolean(transport),
-    sender: () => user,
+    copyTo: () => process.env.REPLY_BCC || '',
+    sender: () => user || (from.match(/<([^>]+)>/) || [])[1] || from,
     verify: () => transport.verify(),
     notify,
     acknowledge,
