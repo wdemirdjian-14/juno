@@ -24,7 +24,7 @@ if ('IntersectionObserver' in window) {
     const g = e.target.id;
     if (e.isIntersecting && !seen.has(g)) { seen.add(g); track({ t: 'sec', v: g }); so.unobserve(e.target); }
   }), { threshold: 0.25 });
-  ['accueil', 'cabinet', 'competences', 'commercial', 'equipe', 'honoraires', 'contact'].forEach(id => {
+  ['accueil', 'cabinet', 'competences', 'equipe', 'honoraires', 'commercial', 'contact'].forEach(id => {
     const el = document.getElementById(id);
     if (el) so.observe(el);
   });

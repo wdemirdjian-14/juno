@@ -7,7 +7,7 @@ const path = require('path');
 const { readJSON, writeJSON } = require('./store');
 
 const BOTS = /bot|crawl|spider|slurp|headless|lighthouse|preview|facebookexternalhit|curl|wget|python|monitor/i;
-const SECTIONS = ['accueil', 'cabinet', 'competences', 'commercial', 'equipe', 'honoraires', 'contact'];
+const SECTIONS = ['accueil', 'cabinet', 'competences', 'equipe', 'honoraires', 'commercial', 'contact'];
 const EVENTS = ['contact_open', 'contact_sent'];
 
 const dayKey = (d = new Date()) => d.toLocaleDateString('sv-SE', { timeZone: 'Europe/Paris' }); // AAAA-MM-JJ
