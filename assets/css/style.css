@@ -351,6 +351,7 @@ address { font-style: normal; }
 .mail-close { width: 40px; height: 40px; border: 0; border-radius: 50%; background: #f1eee9; font-size: 1.6rem; line-height: 1; cursor: pointer; flex: none; }
 .mail-close:hover { background: var(--pink); }
 
+.mail-form[hidden], .mail-sent[hidden] { display: none; }
 .mail-form { display: grid; gap: 14px; padding: 4px 22px calc(24px + env(safe-area-inset-bottom)); }
 .field { display: grid; gap: 6px; }
 .field-row { display: grid; gap: 14px; }
@@ -389,6 +390,23 @@ address { font-style: normal; }
 @keyframes env-pop { from { transform: translateY(30px) scale(.7); opacity: 0; } }
 @keyframes flap { from { transform: scaleY(-1); } }
 @keyframes draw { to { stroke-dashoffset: 0; } }
+
+/* Confirmation affichée après fermeture du formulaire */
+.site-toast {
+  position: fixed; z-index: 60; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom));
+  display: flex; align-items: center; gap: 10px;
+  padding: 14px 22px 14px 16px; border-radius: 999px;
+  background: var(--ink); color: #fff; font-weight: 700; white-space: nowrap;
+  box-shadow: 0 18px 40px -14px rgba(0, 0, 0, .5);
+  transform: translate(-50%, 140%); opacity: 0; pointer-events: none;
+  transition: transform .5s var(--ease), opacity .4s;
+}
+.site-toast::before {
+  content: '✓'; display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%;
+  background: #2e9b5f; font-size: .9rem;
+}
+.site-toast:empty { display: none; }
+.site-toast.show { transform: translate(-50%, 0); opacity: 1; }
 
 /* =========================================================
    Animations au défilement (activées par main.js)

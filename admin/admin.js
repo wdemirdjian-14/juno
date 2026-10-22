@@ -92,8 +92,10 @@
   }
   addEventListener('hashchange', show);
 
+  let mailInfo = { mail: false, sender: '' };
   async function refreshBadge() {
     const me = await api('me');
+    mailInfo = me;
     const b = $('#badge');
     b.hidden = !me.unread;
     b.textContent = me.unread;
@@ -250,6 +252,7 @@
 
   /* ---------- Messages ---------- */
   let msgs = [];
+  const drafts = new Map();
   let filter = 'todo';
   let selected = null;
   const STATUS = { nouveau: 'Nouveau', en_cours: 'En cours', traite: 'Traité' };
@@ -310,6 +313,11 @@
     if (!m) { box.hidden = true; return; }
     box.hidden = false;
 
+    // brouillon de réponse conservé tant que la page reste ouverte
+    if (!drafts.has(m.id)) drafts.set(m.id, `Bonjour ${m.nom},\n\n\n\nBien cordialement,\n\nJudith Caillot & Jade Tellini\nJUNO Avocat·es`);
+    const replyInput = h('textarea', { rows: 9, 'aria-label': 'Votre réponse', oninput: () => drafts.set(m.id, replyInput.value) });
+    replyInput.value = drafts.get(m.id);
+    const replies = m.replies || [];
     const noteInput = h('textarea', { rows: 3, placeholder: 'Ajouter une information (appel passé, rendez-vous, devis envoyé…)', 'aria-label': 'Nouvelle note' });
     box.replaceChildren(
       h('button', { type: 'button', class: 'detail-back', onclick: () => { selected = null; renderMessages(); } }, '← Retour à la liste'),
@@ -318,8 +326,34 @@
         h('a', { href: `mailto:${m.email}?subject=${encodeURIComponent(`Votre demande — ${m.sujet}`)}` }, m.email),
         m.telephone ? h('a', { href: `tel:${m.telephone.replace(/[^\d+]/g, '')}` }, m.telephone) : null,
         h('span', {}, fmtDate(m.date))),
+      m.mail ? h('p', { class: 'mail-flags' },
+        h('span', { class: m.mail.acknowledged ? 'ok' : 'ko' }, m.mail.acknowledged ? '✓ Accusé de réception envoyé' : '✕ Accusé de réception non envoyé'),
+        h('span', { class: m.mail.notified ? 'ok' : 'ko' }, m.mail.notified ? '✓ Reçu dans la boîte du cabinet' : '✕ Notification non envoyée')) : null,
       h('p', { class: 'msg-subject' }, m.sujet),
       h('div', { class: 'detail-body' }, m.message),
+
+      h('div', { class: 'detail-section' },
+        h('h3', {}, replies.length ? `Réponses envoyées (${replies.length})` : 'Répondre par e-mail'),
+        replies.length ? h('ul', { class: 'notes' }, replies.map(r => h('li', { class: 'note reply' }, h('time', {}, `Envoyée le ${fmtDate(r.date)}`), r.text))) : null,
+        mailInfo.mail
+          ? h('form', {
+            class: 'note-form',
+            onsubmit: async e => {
+              e.preventDefault();
+              const btn = e.submitter;
+              if (!replyInput.value.trim() || !confirm(`Envoyer cette réponse à ${m.email} ?`)) return;
+              btn.disabled = true;
+              try {
+                const item = await api(`messages/${m.id}/reply`, { method: 'POST', body: { text: replyInput.value } });
+                drafts.delete(m.id);
+                replace(item);
+                toast('Réponse envoyée');
+              } catch (ex) { toast(ex.message); btn.disabled = false; }
+            },
+          }, replyInput,
+          h('p', { class: 'hint' }, `Envoyée depuis ${mailInfo.sender} : elle apparaîtra aussi dans « Messages envoyés » de cette boîte.`),
+          h('button', { class: 'btn primary', type: 'submit' }, replies.length ? 'Envoyer une nouvelle réponse' : 'Envoyer la réponse'))
+          : h('p', { class: 'hint' }, 'Les e-mails ne sont pas encore configurés sur le serveur : répondez depuis votre messagerie en cliquant sur l’adresse ci-dessus.')),
 
       h('div', { class: 'detail-section' },
         h('h3', {}, 'Suivi'),
@@ -438,8 +472,8 @@
   async function loadSettings() {
     const me = await refreshBadge();
     $('#mail-status').textContent = me.mail
-      ? 'Activées : un e-mail est envoyé à chaque nouveau message reçu.'
-      : 'Désactivées : les messages arrivent uniquement ici. Elles s’activent en renseignant un compte e-mail d’envoi (SMTP) sur le serveur, voir README.';
+      ? `Activés depuis ${me.sender} : chaque message reçu arrive dans cette boîte, le visiteur reçoit un accusé de réception, et vos réponses partent de cette adresse.`
+      : 'Désactivés : les messages arrivent uniquement ici. Pour les activer, lancez sur le serveur « sudo bash /var/www/juno/deploy/configure-mail.sh ».';
   }
 
   $('#pw-form').addEventListener('submit', async e => {

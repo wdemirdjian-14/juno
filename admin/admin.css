@@ -139,6 +139,11 @@ input:focus, textarea:focus, select:focus { outline: 0; border-color: var(--blue
 .note-form { display: grid; gap: 8px; }
 .note-form textarea { min-height: 70px; resize: vertical; }
 .note-form .btn { justify-self: start; }
+.note.reply { background: var(--blue-soft); padding-right: 12px; }
+.mail-flags { display: flex; flex-wrap: wrap; gap: 6px 14px; margin: -6px 0 12px; font-size: .8rem; font-weight: 700; }
+.mail-flags .ok { color: var(--ok); }
+.mail-flags .ko { color: var(--danger); }
+.note-form .hint { margin: 0; }
 .detail-actions { display: flex; flex-wrap: wrap; gap: 8px; }
 
 /* ---------- Textes ---------- */

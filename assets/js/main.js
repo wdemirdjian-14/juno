@@ -1,7 +1,7 @@
 /* JUNO AVOCAT·ES — animations au défilement, menu et widget de contact */
 
 // Adresse proposée au visiteur si l'envoi par le formulaire échoue
-const CONTACT_EMAIL = 'j.tellini@juno-avocates.fr';
+const CONTACT_EMAIL = 'contact@juno-avocates.fr';
 
 const root = document.documentElement;
 const motion = root.classList.contains('motion');
@@ -174,7 +174,18 @@ function closeContact() {
   else done();
 }
 
-dialog.addEventListener('close', () => root.classList.remove('dialog-open'));
+let autoClose = null;
+let toastAfterClose = false;
+const siteToast = document.getElementById('site-toast');
+dialog.addEventListener('close', () => {
+  root.classList.remove('dialog-open');
+  clearTimeout(autoClose);
+  if (!toastAfterClose) return;
+  toastAfterClose = false;
+  siteToast.textContent = 'Message envoyé';
+  siteToast.classList.add('show');
+  setTimeout(() => siteToast.classList.remove('show'), 4000);
+});
 dialog.addEventListener('cancel', e => { e.preventDefault(); closeContact(); });
 dialog.addEventListener('click', e => { if (e.target === dialog) closeContact(); }); // clic sur le fond
 document.querySelectorAll('[data-open-contact]').forEach(b => b.addEventListener('click', openContact));
@@ -224,8 +235,14 @@ form.addEventListener('submit', async e => {
 
     form.reset();
     form.hidden = true;
+    sent.querySelector('.sent-text').textContent = json.ack
+      ? 'Un e-mail de confirmation vient de vous être envoyé. Notre équipe revient vers vous dans les plus brefs délais.'
+      : 'Merci. Notre équipe revient vers vous dans les plus brefs délais.';
     sent.hidden = false;
     requestAnimationFrame(() => sent.classList.add('show'));
+    // le formulaire se referme tout seul, puis une confirmation reste affichée quelques secondes
+    toastAfterClose = true;
+    autoClose = setTimeout(closeContact, 2800);
   } catch (err) {
     showError(`L’envoi n’a pas abouti. Vous pouvez <a href="${mailtoFallback(data)}">nous écrire directement depuis votre messagerie</a>.`);
   } finally {

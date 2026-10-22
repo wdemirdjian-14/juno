@@ -14,7 +14,7 @@ const auth = require('./lib/auth').create(DATA_DIR);
 const content = require('./lib/content').create({ siteDir: SITE_DIR, dataDir: DATA_DIR });
 const analytics = require('./lib/analytics').create(DATA_DIR);
 const messages = require('./lib/messages').create(DATA_DIR);
-const mailer = require('./lib/mailer');
+const mailer = require('./lib/mailer').create({ siteDir: SITE_DIR });
 
 content.render();
 
@@ -121,8 +121,15 @@ async function route(req, res) {
     if (errors.length) return send(res, 400, { error: 'Champs invalides', fields: errors });
     const item = messages.add(msg);
     analytics.event('contact_sent');
-    mailer.notify(item, siteUrl(req));
-    return send(res, 200, { success: true });
+    if (mailer.enabled()) {
+      // envois en arrière-plan : le visiteur a sa réponse tout de suite, le résultat est noté sur le message
+      const url = process.env.SITE_URL || siteUrl(req);
+      Promise.allSettled([mailer.notify(item, url), mailer.acknowledge(item)]).then(([n, a]) => {
+        for (const r of [n, a]) if (r.status === 'rejected') console.error('Échec d’envoi d’e-mail :', r.reason?.message);
+        messages.setMail(item.id, { notified: n.status === 'fulfilled', acknowledged: a.status === 'fulfilled' });
+      });
+    }
+    return send(res, 200, { success: true, ack: mailer.enabled() });
   }
 
   // --- back-office : pages ---
@@ -158,7 +165,7 @@ async function route(req, res) {
   if (!auth.isAuthenticated(req)) return send(res, 401, { error: 'Non connecté' });
 
   if (route === 'me' && method === 'GET') {
-    return send(res, 200, { ok: true, mail: mailer.enabled(), unread: messages.all().filter(m => !m.archived && m.status === 'nouveau').length });
+    return send(res, 200, { ok: true, mail: mailer.enabled(), sender: mailer.sender(), unread: messages.all().filter(m => !m.archived && m.status === 'nouveau').length });
   }
 
   if (route === 'stats' && method === 'GET') {
@@ -178,6 +185,21 @@ async function route(req, res) {
   }
   if (m && method === 'DELETE') {
     return messages.remove(m[1]) ? send(res, 200, { ok: true }) : send(res, 400, { error: 'Seul un message archivé peut être supprimé.' });
+  }
+  m = route.match(/^messages\/([\w-]+)\/reply$/);
+  if (m && method === 'POST') {
+    if (!mailer.enabled()) return send(res, 400, { error: 'Les e-mails ne sont pas configurés sur le serveur.' });
+    const text = String((await readBody(req)).text || '').trim().slice(0, 20000);
+    const item = messages.all().find(x => x.id === m[1]);
+    if (!item) return send(res, 404, { error: 'Message introuvable' });
+    if (!text) return send(res, 400, { error: 'La réponse est vide.' });
+    try {
+      await mailer.reply(item, text);
+    } catch (err) {
+      console.error('Échec de la réponse :', err.message);
+      return send(res, 502, { error: `L’e-mail n’a pas pu partir : ${err.message}` });
+    }
+    return send(res, 200, messages.addReply(item.id, text));
   }
   m = route.match(/^messages\/([\w-]+)\/notes$/);
   if (m && method === 'POST') {

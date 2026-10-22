@@ -29,6 +29,16 @@ Organisation :
 
 Installation (une fois) : `sudo bash /var/www/juno/deploy/install-backoffice.sh`
 
+### E-mails (contact@juno-avocates.fr, Google Workspace)
+
+- chaque message du site arrive dans la boîte contact@ (« Répondre » écrit directement au visiteur) ;
+- le visiteur reçoit automatiquement un accusé de réception aux couleurs du cabinet ;
+- les réponses rédigées dans le back-office partent de contact@ et apparaissent dans « Messages envoyés ».
+
+Configuration : `sudo bash /var/www/juno/deploy/configure-mail.sh` (le mot de passe est saisi masqué et reste sur le serveur).
+Google exige un **mot de passe d'application** : myaccount.google.com → Sécurité → Validation en deux étapes → Mots de passe des applications.
+Test à tout moment : `sudo node /var/www/juno/server/send-test.js`
+
 Mot de passe oublié : `sudo -u www-data JUNO_DATA=/var/lib/juno node /var/www/juno/server/set-password.js`
 
 Sauvegarde des messages : copier régulièrement le dossier `/var/lib/juno`.

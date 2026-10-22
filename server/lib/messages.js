@@ -66,6 +66,25 @@ function create(dataDir) {
     return item;
   }
 
+  // résultat des e-mails automatiques (notification au cabinet, accusé de réception)
+  function setMail(id, info) {
+    const list = all();
+    const item = list.find(m => m.id === id);
+    if (!item) return;
+    item.mail = info;
+    save(list);
+  }
+
+  // réponse envoyée depuis le back-office : gardée dans l'historique du message
+  function addReply(id, text) {
+    const list = all();
+    const item = list.find(m => m.id === id);
+    item.replies = [...(item.replies || []), { id: crypto.randomUUID(), date: new Date().toISOString(), text }];
+    if (item.status === 'nouveau') item.status = 'en_cours';
+    save(list);
+    return item;
+  }
+
   function removeNote(id, noteId) {
     const list = all();
     const item = list.find(m => m.id === id);
@@ -84,7 +103,7 @@ function create(dataDir) {
     return true;
   }
 
-  return { all, validate, add, update, addNote, removeNote, remove };
+  return { all, validate, add, update, addNote, removeNote, remove, setMail, addReply };
 }
 
 module.exports = { create, STATUSES };
