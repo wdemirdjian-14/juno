@@ -73,3 +73,16 @@ Si le dépôt GitHub est privé, utiliser un *token* GitHub (ou une clé SSH de 
 
 1. Modifier les fichiers en local, puis `git add . && git commit -m "..." && git push`
 2. Sur le VPS : `sudo bash /var/www/juno/deploy/deploy.sh`
+
+## Vérifier le site en ligne
+
+`sudo bash /var/www/juno/deploy/check.sh` (ajouter `--mail` pour envoyer un e-mail de test) : pages, redirections, HTTPS, sécurité, back-office, DNS et messagerie.
+
+## Référencement
+
+- balises titre, description, canonical, Open Graph (image `assets/img/og-juno.jpg`) ;
+- données structurées schema.org (`LegalService` + les deux associées) dans `index.html` ;
+- `robots.txt`, `sitemap.xml`, icônes et `site.webmanifest` ;
+- polices hébergées sur le site (aucun appel à Google Fonts), compression gzip.
+
+À faire une fois : déclarer le site dans Google Search Console (propriété « Domaine » juno-avocates.fr) et y envoyer `https://juno-avocates.fr/sitemap.xml`.

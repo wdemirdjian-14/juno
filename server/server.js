@@ -89,7 +89,7 @@ function serveAdminFile(res, rel) {
       'X-Frame-Options': 'DENY',
       'Referrer-Policy': 'same-origin',
       'X-Robots-Tag': 'noindex, nofollow',
-      'Content-Security-Policy': "default-src 'self'; img-src 'self' data:; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; frame-ancestors 'none'",
+      'Content-Security-Policy': "default-src 'self'; img-src 'self' data:; style-src 'self'; font-src 'self'; frame-ancestors 'none'",
     });
     res.end(buf);
   });

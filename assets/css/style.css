@@ -124,8 +124,9 @@ button { font: inherit; color: inherit; }
   padding: calc(var(--hh) + 24px) var(--gutter) 48px;
   position: relative; overflow: hidden;
 }
-.hero-logo { display: block; width: min(86%, 440px); }
-.hero-logo img { width: 100%; }
+.hero-logo { display: block; width: min(86%, 440px); height: auto; overflow: visible; }
+.hero-logo .lp, .hero-logo .li { transform-box: fill-box; transform-origin: center; }
+.hero-logo .lp-sun .li { transform-origin: 50% 100%; }
 .hero-copy { max-width: 1240px; text-align: center; }
 .eyebrow { font-size: .8125rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--blue); margin-bottom: 18px; }
 .hero h1 { font: 800 clamp(2.4rem, min(11vw, 10.5vh), 7rem)/1 var(--display); letter-spacing: -.055em; color: var(--ink); margin-bottom: 24px; }
@@ -434,12 +435,30 @@ address { font-style: normal; }
 /* Accueil : le logo recule, le titre arrive ligne par ligne */
 .motion .hero { height: 200svh; }
 .motion .hero .stage > * { grid-area: 1 / 1; }
-.motion .hero-logo {
-  --t: clamp(0, var(--p, 0) * 3.2, 1);
-  transform: scale(calc(1 - var(--t) * .18)) translateY(calc(var(--t) * -4vh));
-  opacity: calc(1 - var(--t) * .9);
-  filter: blur(calc(var(--t) * 6px));
+/* Logo : chaque forme arrive à l'affichage… */
+.motion .hero-logo .li { animation: logo-in 1s cubic-bezier(.2, .8, .2, 1) both; }
+.motion .lp-sun .li { animation-name: logo-sun; animation-duration: 1.2s; animation-delay: .1s; }
+.motion .lp-j .li { --from: translate(-700px, 120px) rotate(-35deg); animation-delay: .35s; }
+.motion .lp-bar .li { --from: translateY(-600px); animation-delay: .5s; }
+.motion .lp-u .li { --from: translateY(600px); animation-delay: .45s; }
+.motion .lp-n .li { --from: translateY(-650px); animation-delay: .55s; }
+.motion .lp-o .li { --from: translateX(800px) rotate(300deg); animation-delay: .65s; }
+.motion .lp-tag .li { --from: translateY(60px); animation-delay: 1s; animation-duration: .7s; }
+@keyframes logo-in { from { transform: var(--from); opacity: 0; } }
+@keyframes logo-sun { from { transform: scale(.2, 0); opacity: 0; } }
+/* … puis s'éparpille quand on défile, et revient quand on remonte */
+.motion .hero-logo .lp {
+  --t: clamp(0, var(--p, 0) * 3.4, 1);
+  transform: translate(calc(var(--t) * var(--dx)), calc(var(--t) * var(--dy))) rotate(calc(var(--t) * var(--r, 0deg))) scale(calc(1 - var(--t) * var(--s, 0)));
+  opacity: calc(1 - var(--t) * 1.15);
 }
+.motion .lp-sun { --dx: 0px; --dy: 260px; --s: .5; }
+.motion .lp-bar { --dx: -500px; --dy: -520px; --r: -40deg; }
+.motion .lp-j { --dx: -900px; --dy: 140px; --r: -60deg; }
+.motion .lp-u { --dx: -260px; --dy: 700px; --r: 25deg; }
+.motion .lp-n { --dx: 260px; --dy: -700px; --r: -25deg; }
+.motion .lp-o { --dx: 950px; --dy: 120px; --r: 220deg; }
+.motion .lp-tag { --dx: 0px; --dy: 160px; }
 .motion .hero-copy .eyebrow, .motion .hero h1 span, .motion .lead, .motion .hero-actions {
   opacity: clamp(0, (var(--p, 0) - var(--at)) * 7, 1);
   transform: translateY(calc((1 - clamp(0, (var(--p, 0) - var(--at)) * 7, 1)) * 40px));
