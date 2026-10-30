@@ -39,6 +39,11 @@ Configuration : `sudo bash /var/www/juno/deploy/configure-mail.sh` (le mot de pa
 Google exige un **mot de passe d'application** : myaccount.google.com → Sécurité → Validation en deux étapes → Mots de passe des applications.
 Test à tout moment : `sudo node /var/www/juno/server/send-test.js`
 
+### Nom de domaine définitif
+
+Une fois `juno-avocates.fr` et `www.juno-avocates.fr` pointés vers le VPS (enregistrements A) :
+`sudo bash /var/www/juno/deploy/set-domain.sh` — HTTPS, www et ancienne adresse redirigés vers https://juno-avocates.fr.
+
 Mot de passe oublié : `sudo -u www-data JUNO_DATA=/var/lib/juno node /var/www/juno/server/set-password.js`
 
 Sauvegarde des messages : copier régulièrement le dossier `/var/lib/juno`.

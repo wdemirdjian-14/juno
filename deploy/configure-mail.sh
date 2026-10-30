@@ -36,8 +36,10 @@ if [ "$HOST" = "smtp.gmail.com" ]; then
   [ "${IN:-2}" = "1" ] || MODE=relay
 fi
 
-# réglages conservés, seules les lignes e-mail sont remplacées
+# réglages conservés, seules les lignes e-mail sont remplacées (l'adresse du site est gardée)
 touch "$ENV_FILE"
+SITE_URL=$(sed -n 's/^SITE_URL=//p' "$ENV_FILE" | tail -1)
+SITE_URL=${SITE_URL:-https://juno-avocates-paris.walautao.fr}
 sed -i '/^\s*#\?\s*\(SMTP_HOST\|SMTP_PORT\|SMTP_USER\|SMTP_PASS\|SMTP_PASS_B64\|SMTP_FROM\|SMTP_HELO\|NOTIFY_TO\|REPLY_BCC\|SITE_URL\)=/d' "$ENV_FILE"
 
 if [ "$MODE" = relay ]; then
@@ -50,7 +52,7 @@ SMTP_HELO=juno-avocates-paris.walautao.fr
 SMTP_FROM="JUNO Avocat·es <$ADDR>"
 NOTIFY_TO=$ADDR
 REPLY_BCC=$ADDR
-SITE_URL=https://juno-avocates-paris.walautao.fr
+SITE_URL=$SITE_URL
 CONF
 else
   [ "$HOST" = "smtp.gmail.com" ] && echo "Mot de passe d'application : myaccount.google.com/apppasswords (connecté avec $ADDR)"
@@ -64,7 +66,7 @@ SMTP_USER=$ADDR
 SMTP_PASS_B64=$(printf '%s' "$PASS" | base64 -w0)
 SMTP_FROM="JUNO Avocat·es <$ADDR>"
 NOTIFY_TO=$ADDR
-SITE_URL=https://juno-avocates-paris.walautao.fr
+SITE_URL=$SITE_URL
 CONF
   unset PASS
 fi
